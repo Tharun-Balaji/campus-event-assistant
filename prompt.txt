@@ -1,0 +1,11 @@
+# Define who the assistant is and what it is responsible for.
+# Include the information the assistant will need to answer questions accurately.
+# Clearly explain how the assistant should respond to different types of questions.
+# Keep any structured response requirements precise and consistent.
+# For questions outside the assistant's scope, explain how it should respond.
+# Use a friendly, helpful tone appropriate for students.
+# Organize the instructions in a clear order and avoid conflicting or ambiguous directions.
+# Keep the prompt focused and easy for another model to follow.
+
+
+{user_query}
