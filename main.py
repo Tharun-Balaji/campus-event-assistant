@@ -4,39 +4,54 @@ from dotenv import load_dotenv
 from google import genai
 from utils.config import SYSTEM_PROMPT
 
-# TODO: Load environment variables
+# Load environment variables
+load_dotenv()
+
 
 class LLMClient:
     """Client for interacting with Gemini API for campus event Q&A."""
-    
+
     def __init__(self, api_key: Optional[str] = None):
-        # TODO: Initialize the API key
-        # TODO: Raise ValueError if no API key found
-        # TODO: Initialize the genai Client
-        
-        pass
-    
+        # Initialize the API key
+        self.api_key = api_key or os.getenv("GEMINI_API_KEY")
+
+        # Raise ValueError if no API key found
+        if not self.api_key:
+            raise ValueError("GEMINI_API_KEY not found in environment variables.")
+
+        # Initialize the genai Client
+        self.client = genai.Client(api_key=self.api_key)
+
     def call_api(self, user_query: str) -> str:
         """Call Gemini API with system prompt and user query."""
-        # TODO: Format the prompt with user query
-        
-        # TODO: Make API call to llm
-        
-        # TODO: Handle empty or None response
-        
-        # TODO: Return the response text
-        
-        pass
+        # Format the prompt with user query
+        full_prompt = SYSTEM_PROMPT.format(user_query=user_query)
+        # Make API call to llm
+        response = self.client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=full_prompt,
+        )
 
+        # Handle empty, None, or whitespace-only response
+        text = getattr(response, "text", None) if response is not None else None
+        if text is None or not text.strip():
+            return "I didn't receive a valid response. Please try again."
+
+        # Return the response text
+        return text.strip()
 
 def answer_student_query(query: str) -> str:
     """Answer a student's query about campus events."""
-    # TODO: Create llmClient instance
-    # TODO: Call the API
-    # TODO: Handle exceptions and return error message if needed
-    
-    pass
+    try:
+        # Create llmClient instance
+        client = LLMClient()
 
+        # Call the API
+        return client.call_api(query)
+
+    except Exception as e:
+        # Handle exceptions and return error message if needed
+        return f"Sorry, I encountered an error: {e}"
 
 def main():
     """Main function to demonstrate the API calling functionality."""
@@ -48,10 +63,10 @@ def main():
         "Tell me a joke",  # Non-event query
         "What's the weather like?"  # Non-event query
     ]
-    
+
     print("Campus Event Q&A Assistant")
     print("=" * 40)
-    
+
     for query in test_queries:
         print(f"\nQuery: {query}")
         result = answer_student_query(query)

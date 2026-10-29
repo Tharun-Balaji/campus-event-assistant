@@ -8,24 +8,28 @@ import os
 
 def load_system_prompt() -> str:
     """Load the system prompt from prompt.txt file."""
-    # TODO: Get the path to prompt.txt file
-    
-    # TODO: Open and read the prompt file
-    
-    # TODO: Return the content stripped of whitespace
-    
-    # TODO: Handle FileNotFoundError with appropriate message
-    
-    # TODO: Handle other exceptions with appropriate message
-    
-    pass
+    try:
+        # Path to prompt.txt (one level above utils/)
+        prompt_path = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            "prompt.txt",
+        )
+
+        with open(prompt_path, "r", encoding="utf-8") as f:
+            return f.read().strip()
+
+    except FileNotFoundError:
+        raise FileNotFoundError(
+            "prompt.txt not found. Make sure it is in the project root folder."
+        )
+    except Exception as e:
+        raise Exception(f"Error loading prompt.txt: {e}")
 
 
 def get_system_prompt() -> str:
     """Get the system prompt with user query placeholder."""
-    # TODO: Call load_system_prompt() and return the result
-    
-    pass
+    return load_system_prompt()
 
 
-# TODO: Export the system prompt as SYSTEM_PROMPT
+# Export the system prompt
+SYSTEM_PROMPT = get_system_prompt()
