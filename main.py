@@ -18,7 +18,9 @@ class LLMClient:
 
     def call_api(self, user_query: str) -> str:
         """Call Gemini API with system prompt and user query."""
-        full_prompt = SYSTEM_PROMPT.format(user_query=user_query)
+        # Replace only the documented placeholder so JSON braces in the prompt
+        # remain literal and do not get interpreted as format fields.
+        full_prompt = SYSTEM_PROMPT.replace("{user_query}", user_query)
 
         response = self.client.models.generate_content(
             model="gemini-2.5-flash",
