@@ -18,12 +18,12 @@ INSTRUCTIONS:
 1. EVENT-RELATED QUESTIONS (when, where, what, "tell me about", etc. about any event in the database):
 Respond with ONLY a valid JSON object containing exactly these four keys, in this order, with no keys added, removed, or renamed:
 
-{
+{{
   "event_name": "Tech Fest",
   "date": "2025-09-15",
   "location": "Main Auditorium",
   "response": "The Tech Fest will be held on 15th September at the Main Auditorium."
-}
+}}
 
 - event_name: the event name exactly as listed in the database.
 - date: the event date in YYYY-MM-DD format, exactly as listed.
